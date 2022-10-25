@@ -4,10 +4,13 @@ SRC=src
 OBJ=obj
 SRCS=$(wildcard $(SRC)/*.c)
 OBJS=$(patsubst $(SRC)/%.c, $(OBJ)/%.o, $(SRCS))
-RM=rm
-BIN=Main
 
-all: $(BIN)
+
+main: $(filter-out obj/tests.o, $(OBJS))
+	$(CC) $(CFLAGS) $(filter-out obj/tests.o, $(OBJS)) -o $@ -lm
+
+tests: $(filter-out obj/main.o, $(OBJS))
+	$(CC) $(CFLAGS) $(filter-out obj/main.o, $(OBJS)) -o $@ -lm
 
 $(BIN): $(OBJS)
 	$(CC) $(CFLAGS) $(OBJS) -o $@ -lm
@@ -16,4 +19,4 @@ $(OBJ)/%.o: $(SRC)/%.c
 	$(CC) $(CFLAGS) -c $< -o $@ -lm
 
 clean:
-	rm -f $(BIN) ./$(OBJ)/*.o *.html
+	rm -f tests $(BIN) ./$(OBJ)/*.o *.html *.dot

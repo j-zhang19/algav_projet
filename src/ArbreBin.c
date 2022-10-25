@@ -3,12 +3,13 @@
 #include <stdio.h>
 #include <math.h>
 
-ArbreBin *creerAB(bool b, bool estFeuille) {
+ArbreBin *creerAB(bool b, bool estFeuille, int level) {
     ArbreBin *ab = (ArbreBin *)malloc(sizeof(ArbreBin));
     if (!ab) { exit(1); }
 
     ab->b = b;
     ab->estFeuille = estFeuille;
+    ab->level = level;
     ab->gauche = NULL;
     ab->droite = NULL;
 
@@ -18,9 +19,9 @@ ArbreBin *creerAB(bool b, bool estFeuille) {
 
 ArbreBin *cons_arbre(IntDecomposition *T) {
     if (!T) { return NULL; }
-    if (T->taille == 1) { return creerAB(T->liste[0], true); }
+    if (T->taille == 1) { return creerAB(T->liste[0], true, 0); }
     
-    ArbreBin *ab = creerAB(0, false);
+    ArbreBin *ab = creerAB(0, false, T->taille);
 
     IntDecomposition *t_g = partieGauche(T);
     IntDecomposition *t_d = partieDroite(T);
@@ -35,6 +36,22 @@ ArbreBin *cons_arbre(IntDecomposition *T) {
     return ab;
 }
 
+
+//
+// ArbreBin *cons_arbre_2(IntDecomposition *T) {
+//     unsigned int h = log2(T->taille);
+//     ArbreBin *ab = creerAB(0, false, 0);
+
+//     for (unsigned int i = 0; i < h; i++) {
+        
+//     }
+
+
+//     return ab;
+// }
+//
+
+
 void libereArbreBin(ArbreBin *ab) {
     if (ab) {
         libereArbreBin(ab->gauche);
@@ -43,18 +60,43 @@ void libereArbreBin(ArbreBin *ab) {
     }
 }
 
-void afficheAB(ArbreBin *ab, unsigned int level) {
+void afficheAB(ArbreBin *ab) {
     if (!ab) { return; }
-
-    for (unsigned int i = 1; i < level; i++)
-        printf(i == level - 1 ? "|———————" : "\t");
-    if (!ab->estFeuille) { printf("%d\n", level); }
-    else { printf("%s\n", (ab->estFeuille && ab->b) ? "True" : "False"); }
-    afficheAB(ab->gauche, level + 1);
-    afficheAB(ab->droite, level + 1);
+    printf("noeud: %d\n", ab->level);
+    if (ab->estFeuille) {
+        printf("feuille: %s\n", ab->b ? "True":"False");
+    }
+    afficheAB(ab->gauche);
+    afficheAB(ab->droite);
 }
 
-void createDotFile(ArbreBin *ab, FILE* f) {
-    fprintf(f, "graph {\n");
-    fprintf(f, "%d -- ", ab->b);
+void createDotFile(ArbreBin *ab, char *filename) {
+    char buffer[100];
+    snprintf(buffer, sizeof(buffer), "%s.dot", filename);
+
+    FILE* f = fopen(buffer, "w+");
+
+    fprintf(f, "digraph {\n");
+    ArbreBin* ag = ab->gauche;
+    // ArbreBin* ad = ab->droite;
+
+    while (!ag->estFeuille) {
+        fprintf(f, "%d -> %d [style=dashed]\n", ag->b, ag->gauche->b);
+        ag = ag->gauche;
+    }
+    fprintf(f, "}");
+    
+    fclose(f);
+    snprintf(buffer, sizeof(buffer), "dot -Tsvg %s.dot > %s.html", filename, filename);
+    system(buffer);
+    snprintf(buffer, sizeof(buffer), "open %s.html", filename);
+    system(buffer);
+}
+
+void luka(ArbreBin *ab) {
+    if (!ab) { return; }
+    printf("(");
+    luka(ab->gauche);
+    luka(ab->droite);
+    printf(")");
 }
