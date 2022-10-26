@@ -19,4 +19,4 @@ $(OBJ)/%.o: $(SRC)/%.c
 	$(CC) $(CFLAGS) -c $< -o $@ -lm
 
 clean:
-	rm -f tests $(BIN) ./$(OBJ)/*.o *.html *.dot
+	rm -f tests main ./$(OBJ)/*.o *.html *.dot

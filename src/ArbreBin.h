@@ -6,11 +6,14 @@
 typedef struct ArbreBin {
     bool b;                     // boolean associé au noeud
     bool estFeuille;            // true si feuille false sinon
-    int level;                  // niveau du noeud dans l'arbre
+    unsigned int id;            // id du noeud
     struct ArbreBin *gauche;    // AB gauche
     struct ArbreBin *droite;    // AB droite
 } ArbreBin;
 
+ArbreBin *creerAB(bool b, bool estFeuille, unsigned int v);
+
+ArbreBin *cons_arbre_b(IntDecomposition *T, unsigned int i);
 ArbreBin *cons_arbre(IntDecomposition *T);
 void libereArbreBin(ArbreBin *ab);
 
