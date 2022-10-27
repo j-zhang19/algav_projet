@@ -4,16 +4,16 @@
 #include <stdio.h>
 
 typedef struct ArbreBin {
-    bool b;                     // boolean associé au noeud
+    int b;                      // boolean associé au noeud; -1 si pas une feuille
     bool estFeuille;            // true si feuille false sinon
-    unsigned int id;            // id du noeud
+    unsigned int h;             // hauteur du noeud dans l'arbre
     struct ArbreBin *gauche;    // AB gauche
     struct ArbreBin *droite;    // AB droite
 } ArbreBin;
 
-ArbreBin *creerAB(bool b, bool estFeuille, unsigned int v);
+ArbreBin *creerAB(int b, bool estFeuille, unsigned int v);
 
-ArbreBin *cons_arbre_b(IntDecomposition *T, unsigned int i);
+ArbreBin *cons_arbre_b(IntDecomposition *T, unsigned int h);
 ArbreBin *cons_arbre(IntDecomposition *T);
 void libereArbreBin(ArbreBin *ab);
 
