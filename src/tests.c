@@ -45,6 +45,7 @@ int main(int argc, char const *argv[]) {
     luka(ab); // (((()())(()()))((()())(()())))
     printf("\n");
 
+
     char *filename = "sortie";
     createDotFile(ab, filename);
 

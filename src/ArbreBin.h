@@ -3,6 +3,10 @@
 #include "functions.h"
 #include <stdio.h>
 
+typedef struct Leaf {
+    bool b;
+} Leaf;
+
 typedef struct ArbreBin {
     int b;                      // boolean associé au noeud; -1 si pas une feuille
     bool estFeuille;            // true si feuille false sinon

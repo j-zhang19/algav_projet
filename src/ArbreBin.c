@@ -94,16 +94,21 @@ void createDotFile(ArbreBin *ab, char *filename) {
 
 void luka(ArbreBin *ab) {
     if (!ab) { return; }
-    printf("(");
-    luka(ab->gauche);
-    luka(ab->droite);
-    printf(")");
+    if (ab->estFeuille) {
+        printf("%s", ab->b?"True":"False");
+    } else {
+        printf("x%d(", ab->h);
+        luka(ab->gauche);
+        printf(")(");
+        luka(ab->droite);
+        printf(")");
+    }
 }
+
 
 ArbreBin *compression(ArbreBin *ab) {
     if (!ab) { return NULL; }
     
     
-
     return NULL;
 }
