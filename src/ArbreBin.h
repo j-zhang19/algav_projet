@@ -10,7 +10,8 @@ typedef struct Leaf {
 typedef struct ArbreBin {
     int b;                      // boolean associé au noeud; -1 si pas une feuille
     bool estFeuille;            // true si feuille false sinon
-    unsigned int h;             // hauteur du noeud dans l'arbre
+    unsigned int h;             // hauteur du noeud dans l'arbre = x
+    char *luka;                 // mot de luka associé au noeud
     struct ArbreBin *gauche;    // AB gauche
     struct ArbreBin *droite;    // AB droite
 } ArbreBin;
@@ -26,5 +27,7 @@ void afficheAB(ArbreBin *ab);
 void createDotFile(ArbreBin *ab, char *filename);
 
 void luka(ArbreBin *ab);
+
+
 
 #endif

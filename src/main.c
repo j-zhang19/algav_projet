@@ -39,7 +39,7 @@ int main(int argc, char const *argv[]) {
     afficheListeDecomp(d);
 
     ArbreBin *ab = cons_arbre(d);
-    afficheAB(ab, 1);
+    afficheAB(ab);
 
     libereArbreBin(ab);
     libereIntDecomp(d);

@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
+#include <string.h>
 #include "functions.h"
 #include "ArbreBin.h"
 
@@ -39,11 +40,11 @@ int main(int argc, char const *argv[]) {
     afficheListeDecomp(d);
 
     ArbreBin *ab = cons_arbre(d);
-    afficheAB(ab);
+    //afficheAB(ab);
 
+    luka(ab);
 
-    luka(ab); // (((()())(()()))((()())(()())))
-    printf("\n");
+    printf("%s\n", ab->luka);
 
 
     char *filename = "sortie";
@@ -58,4 +59,4 @@ int main(int argc, char const *argv[]) {
 
 
 // macOS 
-// leaks -atExit -- ./main
+// leaks -atExit -- ./tests

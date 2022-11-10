@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <math.h>
+#include <string.h>
 
 ArbreBin *creerAB(int b, bool estFeuille, unsigned int h) {
     ArbreBin *ab = (ArbreBin *)malloc(sizeof(ArbreBin));
@@ -10,6 +11,11 @@ ArbreBin *creerAB(int b, bool estFeuille, unsigned int h) {
     ab->b = b;
     ab->estFeuille = estFeuille;
     ab->h = h;
+    if (estFeuille) { 
+        ab->luka = (char *)malloc(2);
+        strcpy(ab->luka, b?"T":"F");
+    }
+    else { ab->luka = NULL; }
     ab->gauche = NULL;
     ab->droite = NULL;
 
@@ -42,6 +48,7 @@ void libereArbreBin(ArbreBin *ab) {
     if (ab) {
         libereArbreBin(ab->gauche);
         libereArbreBin(ab->droite);
+        if (ab->luka) { free(ab->luka); }
         free(ab);
     }
 }
@@ -95,20 +102,38 @@ void createDotFile(ArbreBin *ab, char *filename) {
 void luka(ArbreBin *ab) {
     if (!ab) { return; }
     if (ab->estFeuille) {
-        printf("%s", ab->b?"True":"False");
+        char b[256];
+        sprintf(b, "(%s)", ab->luka);
+        ab->luka = (char *)malloc(strlen(b) + 1);
+        strcpy(ab->luka, b);
     } else {
-        printf("x%d(", ab->h);
-        luka(ab->gauche);
-        printf(")(");
-        luka(ab->droite);
-        printf(")");
+        char b[256];
+        sprintf(b, "x%d(", ab->h);
+        
+        if (!ab->gauche->luka) { luka(ab->gauche); }
+        strcat(b, ab->gauche->luka);
+        sprintf(b + strlen(b), ")(");
+
+        if (!ab->droite->luka) { luka(ab->droite); }
+        strcat(b, ab->droite->luka);
+        sprintf(b + strlen(b), ")");
+
+        ab->luka = (char *)malloc(strlen(b) + 1);
+        strcpy(ab->luka, b);
     }
 }
 
 
+/*
+suffixe : 
+if (ab->gauche) { compression(ab->gauche); }
+if (ab->droite) { compression(ab->droite); }
+operation(ab);
+*/
+
 ArbreBin *compression(ArbreBin *ab) {
     if (!ab) { return NULL; }
-    
+    if (!ab->luka) { luka(ab); } // si arbre non enrichi par mots de luka
     
     return NULL;
 }
